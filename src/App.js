@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import SnippetsList from './SnippetsList';
 import './App.css';
 
 class App extends Component {
   render() {
+    let snippets = [
+      {title: 'Snippet 1', author: 'John Smith', content: 'Lorem Ipsum'},
+      {title: 'Snippet 2', author: 'John Smith', content: 'Lorem Ipsum'},
+      {title: 'Snippet 3', author: 'John Smith', content: 'Lorem Ipsum'},
+    ];
+
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <SnippetsList snippets={snippets} />
       </div>
     );
   }
