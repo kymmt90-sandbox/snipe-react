@@ -1,18 +1,39 @@
 import React, { Component } from 'react';
+import request from 'superagent';
 import SnippetsList from './SnippetsList';
 import './App.css';
 
 class App extends Component {
-  render() {
-    let snippets = [
-      {title: 'Snippet 1', author: 'John Smith', content: 'Lorem Ipsum'},
-      {title: 'Snippet 2', author: 'John Smith', content: 'Lorem Ipsum'},
-      {title: 'Snippet 3', author: 'John Smith', content: 'Lorem Ipsum'},
-    ];
+  constructor(props) {
+    super(props);
+    this.state = {
+      snippets: [],
+    }
+    this.fetchSnippets = this.fetchSnippets.bind(this);
+  }
 
+  fetchSnippets() {
+    request
+      .get('http://localhost:3001/snippets')
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          this.setState({
+            snippets: res.body
+          });
+        }
+      });
+  }
+
+  componentWillMount() {
+    this.fetchSnippets();
+  }
+
+  render() {
     return (
       <div className="App">
-        <SnippetsList snippets={snippets} />
+        <SnippetsList snippets={this.state.snippets} />
       </div>
     );
   }
