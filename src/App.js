@@ -2,6 +2,7 @@ import Paginator from './Paginator';
 import parse from 'parse-link-header';
 import React, { Component } from 'react';
 import request from 'superagent';
+import Snippet from './Snippet';
 import SnippetsList from './SnippetsList';
 import './App.css';
 
@@ -9,7 +10,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentLocation: 'snippets',
       snippets: [],
+      snippet: {},
       firstPage: {},
       lastPage: {},
       nextPage: {},
@@ -17,7 +20,9 @@ class App extends Component {
     }
 
     this.fetchSnippets = this.fetchSnippets.bind(this);
+    this.fetchSnippet = this.fetchSnippet.bind(this);
     this.handleClickPaginator = this.handleClickPaginator.bind(this);
+    this.handleClickSnippetTitle = this.handleClickSnippetTitle.bind(this);
 
     this.fetchSnippets('http://localhost:3001/snippets');
   }
@@ -27,6 +32,26 @@ class App extends Component {
     this.fetchSnippets(event.target.href);
   }
 
+  handleClickSnippetTitle(event) {
+    event.preventDefault();
+    this.fetchSnippet(event.target.href);
+  }
+
+  fetchSnippet(url) {
+    request
+      .get(url)
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          this.setState({
+            currentLocation: 'snippet',
+            snippet: res.body
+          });
+        }
+      });
+  }
+
   fetchSnippets(url) {
     request
       .get(url)
@@ -34,6 +59,10 @@ class App extends Component {
         if (err) {
           console.log(err);
         } else {
+          this.setState({
+            currentUrl: 'http://localhost:3001/'
+          });
+
           const linkHeader = parse(res.headers['link']);
 
           this.setState({
@@ -78,12 +107,20 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <div className="App">
-        <SnippetsList snippets={this.state.snippets} />
-        <Paginator first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClick={this.handleClickPaginator} />
-      </div>
-    );
+    if (this.state.currentLocation === 'snippets') {
+      return (
+        <div className="App">
+          <SnippetsList snippets={this.state.snippets} onClickTitle={this.handleClickSnippetTitle} />
+          <Paginator first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClick={this.handleClickPaginator} />
+        </div>
+      );
+    } else if (this.state.currentLocation === 'snippet') {
+      return (
+        <div className="App">
+          <Snippet id={this.state.snippet.id} title={this.state.snippet.title} author={this.state.snippet.author} content={this.state.snippet.content} onClickTitle={this.handleClickSnippetTitle} />
+        </div>
+      );
+    }
   }
 }
 

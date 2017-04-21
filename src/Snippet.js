@@ -6,7 +6,7 @@ class Snippet extends Component {
   render() {
     return (
       <div>
-        <MetaData title={this.props.title} author={this.props.author.name} />
+        <MetaData snippetId={this.props.id} title={this.props.title} author={this.props.author.name} onClickTitle={this.props.onClickTitle} />
         <Content value={this.props.content} />
       </div>
     );
