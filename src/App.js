@@ -23,6 +23,7 @@ class App extends Component {
     this.fetchSnippet = this.fetchSnippet.bind(this);
     this.handleClickPaginator = this.handleClickPaginator.bind(this);
     this.handleClickSnippetTitle = this.handleClickSnippetTitle.bind(this);
+    this.handleClickBackToIndex = this.handleClickBackToIndex.bind(this);
 
     this.fetchSnippets('http://localhost:3001/snippets');
   }
@@ -35,6 +36,11 @@ class App extends Component {
   handleClickSnippetTitle(event) {
     event.preventDefault();
     this.fetchSnippet(event.target.href);
+  }
+
+  handleClickBackToIndex(event) {
+    event.preventDefault();
+    this.fetchSnippets(event.target.href);
   }
 
   fetchSnippet(url) {
@@ -60,7 +66,7 @@ class App extends Component {
           console.log(err);
         } else {
           this.setState({
-            currentUrl: 'http://localhost:3001/'
+            currentLocation: 'snippets'
           });
 
           const linkHeader = parse(res.headers['link']);
@@ -117,7 +123,7 @@ class App extends Component {
     } else if (this.state.currentLocation === 'snippet') {
       return (
         <div className="App">
-          <Snippet id={this.state.snippet.id} title={this.state.snippet.title} author={this.state.snippet.author} content={this.state.snippet.content} onClickTitle={this.handleClickSnippetTitle} />
+          <Snippet title={this.state.snippet.title} author={this.state.snippet.author} content={this.state.snippet.content} onClickBackToIndex={this.handleClickBackToIndex} />
         </div>
       );
     }

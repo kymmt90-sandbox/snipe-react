@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import MetaData from './MetaData.js';
 import Content from './Content.js';
 
 class Snippet extends Component {
   render() {
     return (
       <div>
-        <MetaData snippetId={this.props.id} title={this.props.title} author={this.props.author.name} onClickTitle={this.props.onClickTitle} />
+        <h1>{this.props.title}</h1>
+        <h2>{this.props.author.name}</h2>
         <Content value={this.props.content} />
+        <a href="http://localhost:3001/snippets" onClick={this.props.onClickBackToIndex}>Back to snippets</a>
       </div>
     );
   }
