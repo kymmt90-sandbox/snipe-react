@@ -3,12 +3,17 @@ import Content from './Content.js';
 
 class Snippet extends Component {
   render() {
+    let backToIndexLink = 'http://localhost:3001/snippets';
+    if (this.props.currentPage > 1) {
+      backToIndexLink += `?page=${this.props.currentPage}`;
+    }
+
     return (
       <div>
         <h1>{this.props.title}</h1>
         <h2>{this.props.author.name}</h2>
         <Content value={this.props.content} />
-        <a href="http://localhost:3001/snippets" onClick={this.props.onClickBackToIndex}>Back to snippets</a>
+        <a href={backToIndexLink} onClick={this.props.onClickBackToIndex}>Back to snippets</a>
       </div>
     );
   }

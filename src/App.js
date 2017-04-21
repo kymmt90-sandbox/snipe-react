@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import request from 'superagent';
 import Snippet from './Snippet';
 import SnippetsList from './SnippetsList';
+import _ from 'lodash';
 import './App.css';
 
 class App extends Component {
@@ -24,6 +25,7 @@ class App extends Component {
     this.handleClickPaginator = this.handleClickPaginator.bind(this);
     this.handleClickSnippetTitle = this.handleClickSnippetTitle.bind(this);
     this.handleClickBackToIndex = this.handleClickBackToIndex.bind(this);
+    this.getCurrentPage = this.getCurrentPage.bind(this);
 
     this.fetchSnippets('http://localhost:3001/snippets');
   }
@@ -41,6 +43,18 @@ class App extends Component {
   handleClickBackToIndex(event) {
     event.preventDefault();
     this.fetchSnippets(event.target.href);
+  }
+
+  getCurrentPage() {
+    if (!_.isEmpty(this.state.nextPage)) {
+      return this.toDecimalNumber(this.state.nextPage.number) - 1;
+    } else {
+      return this.toDecimalNumber(this.state.previousPage.number) + 1;
+    }
+  }
+
+  toDecimalNumber(intRepresentation) {
+    return parseInt(intRepresentation, 10)
   }
 
   fetchSnippet(url) {
@@ -123,7 +137,7 @@ class App extends Component {
     } else if (this.state.currentLocation === 'snippet') {
       return (
         <div className="App">
-          <Snippet title={this.state.snippet.title} author={this.state.snippet.author} content={this.state.snippet.content} onClickBackToIndex={this.handleClickBackToIndex} />
+          <Snippet title={this.state.snippet.title} author={this.state.snippet.author} content={this.state.snippet.content} currentPage={this.getCurrentPage()} onClickBackToIndex={this.handleClickBackToIndex} />
         </div>
       );
     }
