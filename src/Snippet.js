@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
-import MetaData from './MetaData.js';
 import Content from './Content.js';
 
 class Snippet extends Component {
   render() {
+    let backToIndexLink = 'http://localhost:3001/snippets';
+    if (this.props.currentPage > 1) {
+      backToIndexLink += `?page=${this.props.currentPage}`;
+    }
+
     return (
       <div>
-        <MetaData title={this.props.title} author={this.props.author.name} />
+        <h1>{this.props.title}</h1>
+        <h2>{this.props.author.name}</h2>
         <Content value={this.props.content} />
+        <a href={backToIndexLink} onClick={this.props.onClickBackToIndex}>Back to snippets</a>
       </div>
     );
   }
