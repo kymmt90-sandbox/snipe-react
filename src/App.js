@@ -1,3 +1,4 @@
+import Paginator from './Paginator';
 import parse from 'parse-link-header';
 import React, { Component } from 'react';
 import request from 'superagent';
@@ -9,13 +10,26 @@ class App extends Component {
     super(props);
     this.state = {
       snippets: [],
+      firstPage: {},
+      lastPage: {},
+      nextPage: {},
+      previousPage: {}
     }
+
     this.fetchSnippets = this.fetchSnippets.bind(this);
+    this.handleClickPaginator = this.handleClickPaginator.bind(this);
+
+    this.fetchSnippets('http://localhost:3001/snippets');
   }
 
-  fetchSnippets() {
+  handleClickPaginator(event) {
+    event.preventDefault();
+    this.fetchSnippets(event.target.href);
+  }
+
+  fetchSnippets(url) {
     request
-      .get('http://localhost:3001/snippets')
+      .get(url)
       .end((err, res) => {
         if (err) {
           console.log(err);
@@ -63,14 +77,11 @@ class App extends Component {
       });
   }
 
-  componentWillMount() {
-    this.fetchSnippets();
-  }
-
   render() {
     return (
       <div className="App">
         <SnippetsList snippets={this.state.snippets} />
+        <Paginator first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClick={this.handleClickPaginator} />
       </div>
     );
   }
