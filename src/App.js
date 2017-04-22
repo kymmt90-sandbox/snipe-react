@@ -153,7 +153,7 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.currentLocation === 'snippets' || this.state.currentLocation === 'user') {
+    if (this.state.currentLocation === 'snippets') {
       return (
         <div className="App">
           <SnippetsList snippets={this.state.snippets} onClickTitle={this.handleClickSnippetTitle} onClickUserName={this.handleClickUserName} />
@@ -164,6 +164,14 @@ class App extends Component {
       return (
         <div className="App">
           <Snippet title={this.state.snippet.title} author={this.state.snippet.author} content={this.state.snippet.content} currentPage={this.getCurrentPage()} onClickBackToIndex={this.handleClickBackToIndex} />
+        </div>
+      );
+    } else if (this.state.currentLocation === 'user') {
+      return (
+        <div className="App">
+          <SnippetsList snippets={this.state.snippets} onClickTitle={this.handleClickSnippetTitle} onClickUserName={this.handleClickUserName} />
+          <Paginator first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClick={this.handleClickPaginator} />
+          <a href="http://localhost:3001/snippets" onClick={this.handleClickPaginator}>Back to all snippets</a>
         </div>
       );
     }
