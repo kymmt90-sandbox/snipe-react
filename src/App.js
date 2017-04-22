@@ -33,6 +33,8 @@ class App extends Component {
     this.moveToLogInPage = this.moveToLogInPage.bind(this);
     this.getCurrentPage = this.getCurrentPage.bind(this);
     this.getUserToken = this.getUserToken.bind(this);
+    this.getRequestWithAuth = this.getRequestWithAuth.bind(this);
+    this.postRequestWithAuth = this.postRequestWithAuth.bind(this);
 
     this.fetchSnippets('http://localhost:3001/snippets');
   }
@@ -84,9 +86,7 @@ class App extends Component {
       }
     };
 
-    request
-      .post('http://localhost:3001/user_token')
-      .type('json')
+    this.postRequestWithAuth('http://localhost:3001/user_token')
       .send(params)
       .end((err, res) => {
         if (err) {
@@ -111,8 +111,7 @@ class App extends Component {
   }
 
   fetchSnippet(url) {
-    request
-      .get(url)
+    this.getRequestWithAuth(url)
       .end((err, res) => {
         if (err) {
           console.log(err);
@@ -126,8 +125,7 @@ class App extends Component {
   }
 
   fetchSnippets(url) {
-    request
-      .get(url)
+    this.getRequestWithAuth(url)
       .end((err, res) => {
         if (err) {
           console.log(err);
@@ -142,8 +140,7 @@ class App extends Component {
   }
 
   fetchUserSnippets(url) {
-    request
-      .get(url)
+    this.getRequestWithAuth(url)
       .end((err, res) => {
         if (err) {
           console.log(err);
@@ -155,6 +152,22 @@ class App extends Component {
           this.setPagesToState(res);
         }
       });
+  }
+
+  getRequestWithAuth(url) {
+    if (this.state.jwt) {
+      return request.get(url).accept('json').set('Authorization', `Bearer ${this.state.jwt}`);
+    } else {
+      return request.get(url).accept('json');
+    }
+  }
+
+  postRequestWithAuth(url) {
+    if (this.state.jwt) {
+      return request.post(url).accept('json').set('Authorization', `Bearer ${this.state.jwt}`);
+    } else {
+      return request.post(url).accept('json');
+    }
   }
 
   setPagesToState(res) {
