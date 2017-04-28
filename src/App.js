@@ -4,6 +4,7 @@ import parse from 'parse-link-header';
 import React, { Component } from 'react';
 import request from 'superagent';
 import Snippet from './Snippet';
+import SnippetsIndex from './SnippetsIndex';
 import SnippetsList from './SnippetsList';
 import _ from 'lodash';
 import './App.css';
@@ -234,11 +235,7 @@ class App extends Component {
       );
     } else {
       return (
-        <div className="App">
-          <a href="#" onClick={this.handleClickLogIn}>Log in</a>
-          <SnippetsList snippets={this.state.snippets} onClickTitle={this.handleClickSnippetTitle} onClickUserName={this.handleClickUserName} />
-          <Paginator first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClick={this.handleClickPaginator} />
-        </div>
+        <SnippetsIndex snippets={this.state.snippets} onClickLogIn={this.handleClickLogIn} onClickSnippetTitle={this.handleClickSnippetTitle} onClickUserName={this.handleClickUserName} first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClickPaginator={this.handleClickPaginator} />
       );
     }
   }
