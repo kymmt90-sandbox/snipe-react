@@ -1,11 +1,10 @@
 import LogIn from './LogIn';
-import Paginator from './Paginator';
-import parse from 'parse-link-header';
 import React, { Component } from 'react';
-import request from 'superagent';
 import Snippet from './Snippet';
 import SnippetsIndex from './SnippetsIndex';
-import SnippetsList from './SnippetsList';
+import UserSnippetsIndex from './UserSnippetsIndex';
+import parse from 'parse-link-header';
+import request from 'superagent';
 import _ from 'lodash';
 import './App.css';
 
@@ -221,11 +220,7 @@ class App extends Component {
       );
     } else if (this.state.currentLocation === 'user') {
       return (
-        <div className="App">
-          <SnippetsList snippets={this.state.snippets} onClickTitle={this.handleClickSnippetTitle} onClickUserName={this.handleClickUserName} />
-          <Paginator first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClick={this.handleClickPaginator} />
-          <a href="http://localhost:3001/snippets" onClick={this.handleClickPaginator}>Back to all snippets</a>
-        </div>
+        <UserSnippetsIndex snippets={this.state.snippets} onClickTitle={this.handleClickSnippetTitle} onClickUserName={this.handleClickUserName} first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClickPaginator={this.handleClickPaginator} />
       );
     } else if (this.state.currentLocation === 'log_in') {
       return (
