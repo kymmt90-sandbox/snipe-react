@@ -1,6 +1,6 @@
 import LogIn from './LogIn';
 import React, { Component } from 'react';
-import Snippet from './Snippet';
+import SnippetShow from './SnippetShow';
 import SnippetsIndex from './SnippetsIndex';
 import UserSnippetsIndex from './UserSnippetsIndex';
 import parse from 'parse-link-header';
@@ -214,9 +214,7 @@ class App extends Component {
   render() {
     if (this.state.currentLocation === 'snippet') {
       return (
-        <div className="App">
-          <Snippet title={this.state.snippet.title} author={this.state.snippet.author} content={this.state.snippet.content} currentPage={this.getCurrentPage()} onClickBackToIndex={this.handleClickBackToIndex} />
-        </div>
+        <SnippetShow title={this.state.snippet.title} author={this.state.snippet.author} content={this.state.snippet.content} currentPage={this.getCurrentPage()} onClickBackToIndex={this.handleClickBackToIndex} />
       );
     } else if (this.state.currentLocation === 'user') {
       return (
