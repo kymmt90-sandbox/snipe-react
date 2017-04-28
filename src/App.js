@@ -1,4 +1,4 @@
-import LoginForm from './LoginForm';
+import LogIn from './LogIn';
 import Paginator from './Paginator';
 import parse from 'parse-link-header';
 import React, { Component } from 'react';
@@ -229,9 +229,7 @@ class App extends Component {
       );
     } else if (this.state.currentLocation === 'log_in') {
       return (
-        <div className="App">
-          <LoginForm getUserToken={this.getUserToken} />
-        </div>
+        <LogIn getUserToken={this.getUserToken} />
       );
     } else {
       return (
