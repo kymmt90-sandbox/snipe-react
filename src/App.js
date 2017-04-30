@@ -148,29 +148,29 @@ class App extends Component {
   }
 
   render() {
-    const mySnippetsIndex = () => (
+    const snippetsIndex = () => (
       <SnippetsIndex snippets={this.state.snippets} first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClickPaginator={this.handleClickPaginator} />
     );
 
-    const myUserSnippetsIndex = ({ match }) => (
+    const userSnippetsIndex = ({ match }) => (
       <UserSnippetsIndex id={match.params.id} first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClickPaginator={this.handleClickPaginator} getRequestWithAuth={this.getRequestWithAuth}  />
     );
 
-    const mySnippetShow = ({ match }) => (
+    const snippetShow = ({ match }) => (
       <SnippetShow id={match.params.id} currentPage={this.getCurrentPage()} getRequestWithAuth={this.getRequestWithAuth} />
     );
 
-    const myLogIn = () => (
+    const logIn = () => (
       <LogIn getUserToken={this.getUserToken} jwt={this.state.jwt} />
     );
 
     return(
       <BrowserRouter>
         <div>
-          <Route exact path="/" component={mySnippetsIndex} />
-          <Route path="/users/:id" component={myUserSnippetsIndex} />
-          <Route path="/snippets/:id" component={mySnippetShow} />
-          <Route path="/login" component={myLogIn} />
+          <Route exact path="/" component={snippetsIndex} />
+          <Route path="/users/:id" component={userSnippetsIndex} />
+          <Route path="/snippets/:id" component={snippetShow} />
+          <Route path="/login" component={logIn} />
         </div>
       </BrowserRouter>
     );
