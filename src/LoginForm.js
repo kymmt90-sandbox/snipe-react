@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import _ from 'lodash';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -10,6 +12,7 @@ class LoginForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.successToAuth = this.successToAuth.bind(this);
   }
 
   handleChange(event) {
@@ -31,22 +34,34 @@ class LoginForm extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <h1>Log in</h1>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Email:
-            <input type="text" value={this.state.email} onChange={this.handleChange} />
-          </label>
-          <label>
-            Password:
-            <input type="password" value={this.state.password} onChange={this.handleChange} />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
-      </div>
-    );
+    const returnToUrl = '/';
+
+    if (this.successToAuth()) {
+      return (
+        <Redirect to={returnToUrl} />
+      );
+    } else {
+      return (
+        <div>
+          <h1>Log in</h1>
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Email:
+              <input type="text" value={this.state.email} onChange={this.handleChange} />
+            </label>
+            <label>
+              Password:
+              <input type="password" value={this.state.password} onChange={this.handleChange} />
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      );
+    }
+  }
+
+  successToAuth() {
+    return !_.isEmpty(this.props.jwt);
   }
 }
 

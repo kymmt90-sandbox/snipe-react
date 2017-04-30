@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import Content from './Content.js';
+import { Link } from 'react-router-dom';
 
 class Snippet extends Component {
   render() {
-    let backToIndexLink = 'http://localhost:3001/snippets';
-    if (this.props.currentPage > 1) {
-      backToIndexLink += `?page=${this.props.currentPage}`;
-    }
-
+    const backToSnippetsUrl = '/';
     return (
       <div>
         <h1>{this.props.title}</h1>
-        <h2>{this.props.author.name}</h2>
+        <h2>{this.props.author}</h2>
         <Content value={this.props.content} />
-        <a href={backToIndexLink} onClick={this.props.onClickBackToIndex}>Back to snippets</a>
+        <Link to={backToSnippetsUrl}>Back to snippets</Link>
       </div>
     );
   }
