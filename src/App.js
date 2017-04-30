@@ -5,10 +5,7 @@ import SnippetsIndex from './SnippetsIndex';
 import UserSnippetsIndex from './UserSnippetsIndex';
 import parse from 'parse-link-header';
 import request from 'superagent';
-import {
-  BrowserRouter as Router,
-  Route,
-} from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import _ from 'lodash';
 import './App.css';
 
@@ -27,7 +24,6 @@ class App extends Component {
     this.fetchSnippets = this.fetchSnippets.bind(this);
     this.setPagesToState = this.setPagesToState.bind(this);
     this.handleClickPaginator = this.handleClickPaginator.bind(this);
-    this.handleClickUserName = this.handleClickUserName.bind(this);
     this.getCurrentPage = this.getCurrentPage.bind(this);
     this.getUserToken = this.getUserToken.bind(this);
     this.getRequestWithAuth = this.getRequestWithAuth.bind(this);
@@ -41,17 +37,16 @@ class App extends Component {
     this.fetchSnippets(event.target.href);
   }
 
-  handleClickUserName(event) {
-    event.preventDefault();
-    this.fetchUserSnippets(event.target.href);
-  }
-
   getCurrentPage() {
     if (!_.isEmpty(this.state.nextPage)) {
       return this.toDecimalNumber(this.state.nextPage.number) - 1;
     } else {
       return this.toDecimalNumber(this.state.previousPage.number) + 1;
     }
+  }
+
+  toDecimalNumber(intRepresentation) {
+    return parseInt(intRepresentation, 10)
   }
 
   getUserToken(email, password) {
@@ -79,10 +74,6 @@ class App extends Component {
           }
         }
       });
-  }
-
-  toDecimalNumber(intRepresentation) {
-    return parseInt(intRepresentation, 10)
   }
 
   fetchSnippets(url) {
@@ -171,8 +162,8 @@ class App extends Component {
   }
 
   render() {
-    const mySnippetsIndex = ({ match }) => (
-        <SnippetsIndex snippets={this.state.snippets} onClickSnippetTitle={this.handleClickSnippetTitle} onClickUserName={this.handleClickUserName} first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClickPaginator={this.handleClickPaginator} />
+    const mySnippetsIndex = () => (
+      <SnippetsIndex snippets={this.state.snippets} first={this.state.firstPage} previous={this.state.previousPage} next={this.state.nextPage} last={this.state.lastPage} onClickPaginator={this.handleClickPaginator} />
     );
 
     const myUserSnippetsIndex = ({ match }) => (
@@ -183,19 +174,19 @@ class App extends Component {
       <SnippetShow id={match.params.id} currentPage={this.getCurrentPage()} getRequestWithAuth={this.getRequestWithAuth} />
     );
 
-    const myLogIn = ({ match }) => (
+    const myLogIn = () => (
       <LogIn getUserToken={this.getUserToken} jwt={this.state.jwt} />
     );
 
     return(
-      <Router>
+      <BrowserRouter>
         <div>
           <Route exact path="/" component={mySnippetsIndex} />
           <Route path="/users/:id" component={myUserSnippetsIndex} />
           <Route path="/snippets/:id" component={mySnippetShow} />
           <Route path="/login" component={myLogIn} />
         </div>
-      </Router>
+      </BrowserRouter>
     );
   }
 }

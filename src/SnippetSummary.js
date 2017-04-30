@@ -6,7 +6,7 @@ class SnippetSummary extends Component {
   render() {
     return (
       <div>
-        <MetaData snippetId={this.props.id} title={this.props.title} author={this.props.author} onClickTitle={this.props.onClickTitle} onClickUserName={this.props.onClickUserName} />
+        <MetaData snippetId={this.props.id} title={this.props.title} author={this.props.author} />
         <Content value={`${this.props.content.substring(0, 300)}......`} />
       </div>
     );
