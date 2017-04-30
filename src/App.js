@@ -90,20 +90,6 @@ class App extends Component {
       });
   }
 
-  fetchUserSnippets(url) {
-    this.getRequestWithAuth(url)
-      .end((err, res) => {
-        if (err) {
-          console.log(err);
-        } else {
-          this.setState({
-            snippets: res.body
-          });
-          this.setPagesToState(res);
-        }
-      });
-  }
-
   getRequestWithAuth(url) {
     if (this.state.jwt) {
       return request.get(url).accept('json').set('Authorization', `Bearer ${this.state.jwt}`);
