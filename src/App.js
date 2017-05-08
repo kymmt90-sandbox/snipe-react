@@ -1,5 +1,6 @@
 import LogIn from './LogIn';
 import React, { Component } from 'react';
+import SnippetCreate from './SnippetCreate';
 import SnippetShow from './SnippetShow';
 import SnippetsIndex from './SnippetsIndex';
 import UserSnippetsIndex from './UserSnippetsIndex';
@@ -160,6 +161,10 @@ class App extends Component {
       <SnippetShow id={match.params.id} currentPage={this.getCurrentPage()} getRequestWithAuth={this.getRequestWithAuth} />
     );
 
+    const snippetCreate = () => (
+      <SnippetCreate postRequestWithAuth={this.postRequestWithAuth} />
+    );
+
     const logIn = () => (
       <LogIn getUserToken={this.getUserToken} jwt={this.state.jwt} />
     );
@@ -171,6 +176,7 @@ class App extends Component {
           <Route path="/users/:id" component={userSnippetsIndex} />
           <Route path="/snippets/:id" component={snippetShow} />
           <Route path="/login" component={logIn} />
+          <Route path="/snippets/new" component={snippetCreate} />
         </div>
       </BrowserRouter>
     );
