@@ -94,16 +94,18 @@ class App extends Component {
   }
 
   getRequestWithAuth(url) {
-    if (this.state.jwt) {
-      return request.get(url).accept('json').set('Authorization', `Bearer ${this.state.jwt}`);
+    const jwt = Cookies.get('jwt');
+    if (jwt) {
+      return request.get(url).accept('json').set('Authorization', `Bearer ${jwt}`);
     } else {
       return request.get(url).accept('json');
     }
   }
 
   postRequestWithAuth(url) {
-    if (this.state.jwt) {
-      return request.post(url).accept('json').set('Authorization', `Bearer ${this.state.jwt}`);
+    const jwt = Cookies.get('jwt');
+    if (jwt) {
+      return request.post(url).accept('json').set('Authorization', `Bearer ${jwt}`);
     } else {
       return request.post(url).accept('json');
     }
