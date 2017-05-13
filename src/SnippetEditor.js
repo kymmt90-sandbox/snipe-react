@@ -112,18 +112,27 @@ class SnippetEditor extends Component {
         <Redirect to={snippetUrl} />
       );
     } else {
+      let deleteButton = null;
+      if (this.isEdit()) {
+        deleteButton = <form onSubmit={this.handleDeleteSubmit}>
+                         <input type="submit" value="Delete" />
+                       </form>
+      }
       return (
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Title:
-            <input type="text" value={this.state.title} onChange={this.handleTitleChange} />
-          </label>
-          <label>
-            Content:
-            <textarea value={this.state.content} onChange={this.handleContentChange} />
-          </label>
-          <input type="submit" value={this.submitButtonText()} />
-        </form>
+        <div>
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Title:
+              <input type="text" value={this.state.title} onChange={this.handleTitleChange} />
+            </label>
+            <label>
+              Content:
+              <textarea value={this.state.content} onChange={this.handleContentChange} />
+            </label>
+            <input type="submit" value={this.submitButtonText()} />
+          </form>
+          {deleteButton}
+        </div>
       );
     }
   }
