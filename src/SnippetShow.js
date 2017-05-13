@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Snippet from './Snippet';
+import { Link } from 'react-router-dom';
 
 class SnippetsShow extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class SnippetsShow extends Component {
     return (
       <div className="App">
         <Snippet title={this.state.title} author={this.state.author} content={this.state.content} currentPage={this.props.currentPage} onClickBackToIndex={this.props.onClickBackToIndex} />
+        <Link to="/">Back to snippets</Link>
       </div>
     );
   }
