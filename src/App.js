@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import LogIn from './LogIn';
 import React, { Component } from 'react';
 import SnippetCreate from './SnippetCreate';
@@ -68,6 +69,7 @@ class App extends Component {
             this.setState({
               jwt: res.body.jwt,
             });
+            Cookies.set('jwt', res.body.jwt);
           } else {
             this.setState({
               jwt: ''
