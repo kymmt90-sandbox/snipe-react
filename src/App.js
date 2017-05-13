@@ -174,7 +174,7 @@ class App extends Component {
         <div>
           <Route exact path="/" component={snippetsIndex} />
           <Route path="/users/:id" component={userSnippetsIndex} />
-          <Route path="/snippets/:id" component={snippetShow} />
+          <Route path="/snippets/:id(\d+)" component={snippetShow} />
           <Route path="/login" component={logIn} />
           <Route path="/snippets/new" component={snippetCreate} />
         </div>
