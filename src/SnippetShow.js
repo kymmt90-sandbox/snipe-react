@@ -7,6 +7,7 @@ class SnippetsShow extends Component {
     super(props);
 
     this.state = {
+      id: null,
       title: '',
       author: '',
       content: '',
@@ -19,6 +20,8 @@ class SnippetsShow extends Component {
     return (
       <div className="App">
         <Snippet title={this.state.title} author={this.state.author} content={this.state.content} currentPage={this.props.currentPage} onClickBackToIndex={this.props.onClickBackToIndex} />
+        <Link to={`/snippets/${this.state.id}/edit`}>Edit</Link>
+        <br />
         <Link to="/">Back to snippets</Link>
       </div>
     );
@@ -36,6 +39,7 @@ class SnippetsShow extends Component {
           console.log(err);
         } else {
           this.setState({
+            id: res.body.id,
             title: res.body.title,
             author: res.body.author.name,
             content: res.body.content,
