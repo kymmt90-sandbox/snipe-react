@@ -20,7 +20,7 @@ class App extends Component {
       lastPage: {},
       nextPage: {},
       previousPage: {},
-      jwt: ''
+      loggedIn: false,
     }
 
     this.fetchSnippets = this.fetchSnippets.bind(this);
@@ -66,14 +66,11 @@ class App extends Component {
           console.log(err);
         } else {
           if (res.body.jwt) {
-            this.setState({
-              jwt: res.body.jwt,
-            });
             Cookies.set('jwt', res.body.jwt);
+            this.setState({loggedIn: true});
           } else {
-            this.setState({
-              jwt: ''
-            });
+            Cookies.remove('jwt');
+            this.setState({loggedIn: false});
           }
         }
       });
@@ -170,7 +167,7 @@ class App extends Component {
     );
 
     const logIn = () => (
-      <LogIn getUserToken={this.getUserToken} jwt={this.state.jwt} />
+      <LogIn getUserToken={this.getUserToken} loggedIn={this.state.loggedIn} />
     );
 
     return(

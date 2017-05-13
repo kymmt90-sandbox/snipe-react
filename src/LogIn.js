@@ -5,7 +5,7 @@ class LogIn extends Component {
   render() {
     return (
       <div className="App">
-        <LoginForm getUserToken={this.props.getUserToken} jwt={this.props.jwt} />
+        <LoginForm getUserToken={this.props.getUserToken} loggedIn={this.props.loggedIn} />
       </div>
     );
   }
