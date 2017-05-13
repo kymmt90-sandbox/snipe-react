@@ -58,9 +58,9 @@ class SnippetEditor extends Component {
 
   render() {
     if (this.state.id) {
-      const url = `http://localhost:3001/snippets/${this.state.id}`
+      const snippetUrl = `/snippets/${this.state.id}`
       return (
-        <Redirect to={url} />
+        <Redirect to={snippetUrl} />
       );
     } else {
       return (
