@@ -1,5 +1,7 @@
+import Cookies from 'js-cookie';
 import LogIn from './LogIn';
 import React, { Component } from 'react';
+import SnippetCreate from './SnippetCreate';
 import SnippetShow from './SnippetShow';
 import SnippetsIndex from './SnippetsIndex';
 import UserSnippetsIndex from './UserSnippetsIndex';
@@ -18,7 +20,7 @@ class App extends Component {
       lastPage: {},
       nextPage: {},
       previousPage: {},
-      jwt: ''
+      loggedIn: false,
     }
 
     this.fetchSnippets = this.fetchSnippets.bind(this);
@@ -64,13 +66,11 @@ class App extends Component {
           console.log(err);
         } else {
           if (res.body.jwt) {
-            this.setState({
-              jwt: res.body.jwt,
-            });
+            Cookies.set('jwt', res.body.jwt);
+            this.setState({loggedIn: true});
           } else {
-            this.setState({
-              jwt: ''
-            });
+            Cookies.remove('jwt');
+            this.setState({loggedIn: false});
           }
         }
       });
@@ -91,16 +91,18 @@ class App extends Component {
   }
 
   getRequestWithAuth(url) {
-    if (this.state.jwt) {
-      return request.get(url).accept('json').set('Authorization', `Bearer ${this.state.jwt}`);
+    const jwt = Cookies.get('jwt');
+    if (jwt) {
+      return request.get(url).accept('json').set('Authorization', `Bearer ${jwt}`);
     } else {
       return request.get(url).accept('json');
     }
   }
 
   postRequestWithAuth(url) {
-    if (this.state.jwt) {
-      return request.post(url).accept('json').set('Authorization', `Bearer ${this.state.jwt}`);
+    const jwt = Cookies.get('jwt');
+    if (jwt) {
+      return request.post(url).accept('json').set('Authorization', `Bearer ${jwt}`);
     } else {
       return request.post(url).accept('json');
     }
@@ -160,8 +162,12 @@ class App extends Component {
       <SnippetShow id={match.params.id} currentPage={this.getCurrentPage()} getRequestWithAuth={this.getRequestWithAuth} />
     );
 
+    const snippetCreate = () => (
+      <SnippetCreate postRequestWithAuth={this.postRequestWithAuth} />
+    );
+
     const logIn = () => (
-      <LogIn getUserToken={this.getUserToken} jwt={this.state.jwt} />
+      <LogIn getUserToken={this.getUserToken} loggedIn={this.state.loggedIn} />
     );
 
     return(
@@ -169,8 +175,9 @@ class App extends Component {
         <div>
           <Route exact path="/" component={snippetsIndex} />
           <Route path="/users/:id" component={userSnippetsIndex} />
-          <Route path="/snippets/:id" component={snippetShow} />
+          <Route path="/snippets/:id(\d+)" component={snippetShow} />
           <Route path="/login" component={logIn} />
+          <Route path="/snippets/new" component={snippetCreate} />
         </div>
       </BrowserRouter>
     );

@@ -12,7 +12,6 @@ class LoginForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.successToAuth = this.successToAuth.bind(this);
   }
 
   handleChange(event) {
@@ -36,7 +35,7 @@ class LoginForm extends Component {
   render() {
     const returnToUrl = '/';
 
-    if (this.successToAuth()) {
+    if (this.props.loggedIn) {
       return (
         <Redirect to={returnToUrl} />
       );
@@ -58,10 +57,6 @@ class LoginForm extends Component {
         </div>
       );
     }
-  }
-
-  successToAuth() {
-    return !_.isEmpty(this.props.jwt);
   }
 }
 
