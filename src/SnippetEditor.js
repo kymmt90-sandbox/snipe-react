@@ -18,10 +18,11 @@ class SnippetEditor extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.postSnippet = this.postSnippet.bind(this);
     this.submitButtonText = this.submitButtonText.bind(this);
+    this.isEdit = this.isEdit.bind(this);
   }
 
   componentDidMount() {
-    if (!this.props.id) return;
+    if (!this.isEdit()) return;
 
     const snippetUrl = `http://localhost:3001/snippets/${this.props.id}`;
     this.props.getRequestWithAuth(snippetUrl)
@@ -52,11 +53,7 @@ class SnippetEditor extends Component {
   handleSubmit(event) {
     event.preventDefault();
     if (!_.isEmpty(this.state.title) && !_.isEmpty(this.state.content)) {
-      if (this.props.id) {
-        this.patchSnippet();
-      } else {
-        this.postSnippet();
-      }
+      this.isEdit() ? this.patchSnippet() : this.postSnippet();
     }
   }
 
@@ -101,7 +98,11 @@ class SnippetEditor extends Component {
   }
 
   submitButtonText() {
-    return this.props.id ? 'Update snippet' : 'Create snippet'
+    return this.isEdit() ? 'Update snippet' : 'Create snippet'
+  }
+
+  isEdit() {
+    return !_.isEmpty(this.props.id);
   }
 
   render() {
