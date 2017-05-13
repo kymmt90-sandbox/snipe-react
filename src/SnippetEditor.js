@@ -9,13 +9,32 @@ class SnippetEditor extends Component {
     this.state = {
       title: '',
       content: '',
-      id: null,
+      resultSnippetId: null,
+      completed: false,
     };
 
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleContentChange = this.handleContentChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.postSnippet = this.postSnippet.bind(this);
+    this.submitButtonText = this.submitButtonText.bind(this);
+  }
+
+  componentDidMount() {
+    if (!this.props.id) return;
+
+    const snippetUrl = `http://localhost:3001/snippets/${this.props.id}`;
+    this.props.getRequestWithAuth(snippetUrl)
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          this.setState({
+            title: res.body.title,
+            content: res.body.content
+          });
+        }
+      });
   }
 
   handleTitleChange(event) {
@@ -33,7 +52,11 @@ class SnippetEditor extends Component {
   handleSubmit(event) {
     event.preventDefault();
     if (!_.isEmpty(this.state.title) && !_.isEmpty(this.state.content)) {
-      this.postSnippet();
+      if (this.props.id) {
+        this.patchSnippet();
+      } else {
+        this.postSnippet();
+      }
     }
   }
 
@@ -50,15 +73,40 @@ class SnippetEditor extends Component {
           console.log(err);
         } else {
           this.setState({
-            id: res.body.id,
+            resultSnippetId: res.body.id,
+            completed: true,
           });
         }
       });
   }
 
+  patchSnippet() {
+    const url = `http://localhost:3001/snippets/${this.props.id}`;
+    const params = {
+      title: this.state.title,
+      content: this.state.content,
+    };
+    this.props.patchRequestWithAuth(url)
+      .send(params)
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          this.setState({
+            resultSnippetId: res.body.id,
+            completed: true,
+          });
+        }
+      });
+  }
+
+  submitButtonText() {
+    return this.props.id ? 'Update snippet' : 'Create snippet'
+  }
+
   render() {
-    if (this.state.id) {
-      const snippetUrl = `/snippets/${this.state.id}`
+    if (this.state.completed) {
+      const snippetUrl = `/snippets/${this.state.resultSnippetId}`
       return (
         <Redirect to={snippetUrl} />
       );
@@ -73,7 +121,7 @@ class SnippetEditor extends Component {
             Content:
             <textarea value={this.state.content} onChange={this.handleContentChange} />
           </label>
-          <input type="submit" value="Create snippet" />
+          <input type="submit" value={this.submitButtonText()} />
         </form>
       );
     }

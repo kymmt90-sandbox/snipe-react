@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import SnippetCreate from './SnippetCreate';
 import SnippetShow from './SnippetShow';
 import SnippetsIndex from './SnippetsIndex';
+import SnippetUpdate from './SnippetUpdate';
 import UserSnippetsIndex from './UserSnippetsIndex';
 import parse from 'parse-link-header';
 import request from 'superagent';
@@ -108,6 +109,15 @@ class App extends Component {
     }
   }
 
+  patchRequestWithAuth(url) {
+    const jwt = Cookies.get('jwt');
+    if (jwt) {
+      return request.patch(url).accept('json').set('Authorization', `Bearer ${jwt}`);
+    } else {
+      return request.patch(url).accept('json');
+    }
+  }
+
   setPagesToState(res) {
     const linkHeader = parse(res.headers['link']);
 
@@ -166,6 +176,10 @@ class App extends Component {
       <SnippetCreate postRequestWithAuth={this.postRequestWithAuth} />
     );
 
+    const snippetUpdate = ({ match }) => (
+      <SnippetUpdate id={match.params.id} getRequestWithAuth={this.getRequestWithAuth} patchRequestWithAuth={this.patchRequestWithAuth} />
+    );
+
     const logIn = () => (
       <LogIn getUserToken={this.getUserToken} loggedIn={this.state.loggedIn} />
     );
@@ -175,7 +189,8 @@ class App extends Component {
         <div>
           <Route exact path="/" component={snippetsIndex} />
           <Route path="/users/:id" component={userSnippetsIndex} />
-          <Route path="/snippets/:id(\d+)" component={snippetShow} />
+          <Route exact path="/snippets/:id(\d+)" component={snippetShow} />
+          <Route path="/snippets/:id(\d+)/edit" component={snippetUpdate} />
           <Route path="/login" component={logIn} />
           <Route path="/snippets/new" component={snippetCreate} />
         </div>
