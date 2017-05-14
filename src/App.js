@@ -8,7 +8,7 @@ import SnippetUpdate from './SnippetUpdate';
 import UserSnippetsIndex from './UserSnippetsIndex';
 import parse from 'parse-link-header';
 import request from 'superagent';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import _ from 'lodash';
 import './App.css';
 
@@ -195,14 +195,15 @@ class App extends Component {
 
     return(
       <BrowserRouter>
-        <div>
+        <Switch>
           <Route exact path="/" component={snippetsIndex} />
-          <Route path="/users/:id" component={userSnippetsIndex} />
-          <Route exact path="/snippets/:id(\d+)" component={snippetShow} />
-          <Route path="/snippets/:id(\d+)/edit" component={snippetUpdate} />
-          <Route path="/login" component={logIn} />
           <Route path="/snippets/new" component={snippetCreate} />
-        </div>
+          <Route path="/snippets/:id/edit" component={snippetUpdate} />
+          <Route path="/snippets/:id" component={snippetShow} />
+          <Route path="/users/:id" component={userSnippetsIndex} />
+          <Route path="/login" component={logIn} />
+          <Route component={snippetIndex} />
+        </Switch>
       </BrowserRouter>
     );
   }
