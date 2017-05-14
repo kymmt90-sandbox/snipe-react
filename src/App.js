@@ -118,6 +118,15 @@ class App extends Component {
     }
   }
 
+  deleteRequestWithAuth(url) {
+    const jwt = Cookies.get('jwt');
+    if (jwt) {
+      return request.delete(url).accept('json').set('Authorization', `Bearer ${jwt}`);
+    } else {
+      return request.delete(url).accept('json');
+    }
+  }
+
   setPagesToState(res) {
     const linkHeader = parse(res.headers['link']);
 
@@ -177,7 +186,7 @@ class App extends Component {
     );
 
     const snippetUpdate = ({ match }) => (
-      <SnippetUpdate id={match.params.id} getRequestWithAuth={this.getRequestWithAuth} patchRequestWithAuth={this.patchRequestWithAuth} />
+      <SnippetUpdate id={match.params.id} getRequestWithAuth={this.getRequestWithAuth} patchRequestWithAuth={this.patchRequestWithAuth} deleteRequestWithAuth={this.deleteRequestWithAuth} />
     );
 
     const logIn = () => (
