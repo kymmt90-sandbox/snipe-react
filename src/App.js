@@ -202,7 +202,7 @@ class App extends Component {
           <Route path="/snippets/:id" component={snippetShow} />
           <Route path="/users/:id" component={userSnippetsIndex} />
           <Route path="/login" component={logIn} />
-          <Route component={snippetIndex} />
+          <Route component={snippetsIndex} />
         </Switch>
       </BrowserRouter>
     );
