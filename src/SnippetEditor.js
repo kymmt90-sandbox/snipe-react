@@ -19,6 +19,7 @@ class SnippetEditor extends Component {
     this.postSnippet = this.postSnippet.bind(this);
     this.submitButtonText = this.submitButtonText.bind(this);
     this.isEdit = this.isEdit.bind(this);
+    this.deleteButton = this.deleteButton.bind(this);
   }
 
   componentDidMount() {
@@ -105,6 +106,18 @@ class SnippetEditor extends Component {
     return !_.isEmpty(this.props.id);
   }
 
+  deleteButton() {
+    if (this.isEdit()) {
+      return (
+        <form onSubmit={this.handleDeleteSubmit}>
+          <input type="submit" value="Delete" />
+        </form>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
     if (this.state.completed) {
       const snippetUrl = `/snippets/${this.state.resultSnippetId}`
@@ -112,12 +125,6 @@ class SnippetEditor extends Component {
         <Redirect to={snippetUrl} />
       );
     } else {
-      let deleteButton = null;
-      if (this.isEdit()) {
-        deleteButton = <form onSubmit={this.handleDeleteSubmit}>
-                         <input type="submit" value="Delete" />
-                       </form>
-      }
       return (
         <div>
           <form onSubmit={this.handleSubmit}>
@@ -131,7 +138,7 @@ class SnippetEditor extends Component {
             </label>
             <input type="submit" value={this.submitButtonText()} />
           </form>
-          {deleteButton}
+          {this.deleteButton()}
         </div>
       );
     }
