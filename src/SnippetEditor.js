@@ -114,7 +114,6 @@ class SnippetEditor extends Component {
           console.log(err);
         } else {
           this.setState({
-            completed: true,
             deleted: true,
           });
         }
